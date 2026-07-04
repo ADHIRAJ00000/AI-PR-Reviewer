@@ -1,0 +1,29 @@
+# ---- Web / API ----
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+
+# ---- Data models / config ----
+pydantic==2.10.4
+pydantic-settings==2.7.1
+
+# ---- HTTP client (GitHub API) ----
+httpx==0.28.1
+
+# ---- Agent orchestration ----
+langgraph==0.2.62
+langchain==0.3.14
+langchain-core==0.3.30
+langchain-anthropic==0.3.3
+langchain-groq==0.2.3
+
+# ---- Observability ----
+langfuse==2.57.1
+
+# ---- Env / cache ----
+python-dotenv==1.0.1
+redis==5.2.1
+
+# ---- Tests ----
+pytest==8.3.4
+pytest-asyncio==0.25.2
+respx==0.22.0

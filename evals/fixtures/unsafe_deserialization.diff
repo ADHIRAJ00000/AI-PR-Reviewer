@@ -1,0 +1,10 @@
+diff --git a/app/session.py b/app/session.py
+index 7777777..8888888 100644
+--- a/app/session.py
++++ b/app/session.py
+@@ -1,4 +1,7 @@
+ import pickle
+ 
++def load_session(raw_bytes):
++    # deserialize an untrusted session blob from the request
++    return pickle.loads(raw_bytes)

@@ -1,0 +1,9 @@
+diff --git a/app/utils.py b/app/utils.py
+index 5555555..6666666 100644
+--- a/app/utils.py
++++ b/app/utils.py
+@@ -5,3 +5,6 @@ import os
+ 
++def ping(host):
++    # runs a shell ping with a user-supplied host
++    os.system("ping -c 1 " + host)

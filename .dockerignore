@@ -1,0 +1,29 @@
+# Virtual envs / caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets / local env
+.env
+.env.local
+*.pem
+
+# VCS / IDE / OS
+.git/
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+
+# Tests & docs not needed in the image
+tests/
+*.md
+architecture.md
+
+# Misc
+*.log
+scratch*

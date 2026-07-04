@@ -1,0 +1,10 @@
+diff --git a/app/auth.py b/app/auth.py
+index bbbbbbb..ccccccc 100644
+--- a/app/auth.py
++++ b/app/auth.py
+@@ -1,4 +1,7 @@
+ import hashlib
+ 
++def hash_password(pw):
++    # MD5 is cryptographically broken for password hashing
++    return hashlib.md5(pw.encode()).hexdigest()

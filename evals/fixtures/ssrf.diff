@@ -1,0 +1,10 @@
+diff --git a/app/fetch.py b/app/fetch.py
+index ddddddd..eeeeeee 100644
+--- a/app/fetch.py
++++ b/app/fetch.py
+@@ -1,4 +1,7 @@
+ import requests
+ 
++def fetch_url(user_url):
++    # the user controls the full URL -> SSRF
++    return requests.get(user_url).text

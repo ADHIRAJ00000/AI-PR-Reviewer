@@ -1,0 +1,78 @@
+{
+  "sql_injection.diff": {
+    "kind": "insecure",
+    "intent": "Adds a UserRepo.find_by_name method that looks up a user row by username.",
+    "expected_vulnerabilities": [
+      {"category_keywords": ["sql", "injection"], "file": "db.py"}
+    ]
+  },
+  "hardcoded_secret.diff": {
+    "kind": "insecure",
+    "intent": "Adds configuration constants for Stripe and AWS credentials.",
+    "expected_vulnerabilities": [
+      {"category_keywords": ["secret", "hardcoded", "key", "credential"], "file": "config.py"}
+    ]
+  },
+  "command_injection.diff": {
+    "kind": "insecure",
+    "intent": "Adds a ping() helper that runs the system ping command against a host.",
+    "expected_vulnerabilities": [
+      {"category_keywords": ["command", "injection", "os.system", "shell"], "file": "utils.py"}
+    ]
+  },
+  "unsafe_deserialization.diff": {
+    "kind": "insecure",
+    "intent": "Adds load_session() to restore a session object from bytes.",
+    "expected_vulnerabilities": [
+      {"category_keywords": ["deserial", "pickle", "unsafe"], "file": "session.py"}
+    ]
+  },
+  "path_traversal.diff": {
+    "kind": "insecure",
+    "intent": "Adds read_user_file() to read a file from the data directory by name.",
+    "expected_vulnerabilities": [
+      {"category_keywords": ["path", "traversal", "directory"], "file": "files.py"}
+    ]
+  },
+  "weak_crypto.diff": {
+    "kind": "insecure",
+    "intent": "Adds hash_password() to hash a password.",
+    "expected_vulnerabilities": [
+      {"category_keywords": ["crypto", "md5", "hash", "weak", "insecure"], "file": "auth.py"}
+    ]
+  },
+  "ssrf.diff": {
+    "kind": "insecure",
+    "intent": "Adds fetch_url() to fetch the contents of a URL.",
+    "expected_vulnerabilities": [
+      {"category_keywords": ["ssrf", "server-side request", "url"], "file": "fetch.py"}
+    ]
+  },
+  "missing_validation.diff": {
+    "kind": "insecure",
+    "intent": "Adds a /transfer endpoint that moves an amount to an account.",
+    "expected_vulnerabilities": [
+      {"category_keywords": ["validation", "authorization", "access control", "input"], "file": "api.py"}
+    ]
+  },
+  "clean_refactor.diff": {
+    "kind": "clean",
+    "intent": "Adds type hints and a docstring to the add() function; no behavioral change.",
+    "expected_vulnerabilities": []
+  },
+  "clean_docs.diff": {
+    "kind": "clean",
+    "intent": "Adds an Installation section to the README.",
+    "expected_vulnerabilities": []
+  },
+  "clean_add_test.diff": {
+    "kind": "clean",
+    "intent": "Adds a unit test for the add() function.",
+    "expected_vulnerabilities": []
+  },
+  "buggy_logic.diff": {
+    "kind": "buggy",
+    "intent": "Changes pagination offset computation (introduces an off-by-one that skips the first page).",
+    "expected_vulnerabilities": []
+  }
+}

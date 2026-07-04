@@ -1,0 +1,10 @@
+diff --git a/app/files.py b/app/files.py
+index 9999999..aaaaaaa 100644
+--- a/app/files.py
++++ b/app/files.py
+@@ -2,3 +2,6 @@ import os
+ 
++def read_user_file(filename):
++    # no validation on the path component
++    with open("/data/" + filename) as f:
++        return f.read()

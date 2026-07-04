@@ -1,0 +1,11 @@
+diff --git a/app/api.py b/app/api.py
+index fffffff..1010101 100644
+--- a/app/api.py
++++ b/app/api.py
+@@ -10,3 +10,8 @@ app = FastAPI()
+ 
++@app.post("/transfer")
++def transfer(amount, to_account):
++    # no validation that amount > 0 or that the account belongs to the caller
++    ledger.move(amount, to_account)
++    return {"ok": True}
