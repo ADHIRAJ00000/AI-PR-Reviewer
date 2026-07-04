@@ -13,6 +13,8 @@ These aren't chatbots. They're **workers with tools**: they call the real GitHub
 API, read real diffs, emit **structured** (schema-validated) findings, and the
 graph decides the control flow.
 
+**Tech stack:** Python · FastAPI · LangGraph · Pydantic · Redis · Docker · Langfuse · pytest.
+
 > _📸 Screenshot / GIF of an auto-generated review comment goes here._
 
 ---
