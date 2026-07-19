@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Autonomous PR Reviewer</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <h1>Autonomous PR Reviewer</h1>
+      <p class="tagline">
+        A LangGraph agent team that reads a pull request diff, runs a diff
+        analyzer, test suggester and security auditor <em>in parallel</em>, then
+        merges their findings into one prioritized review.
+      </p>
+      <p class="note">
+        Paste a diff or load an example, then run it. This page drives the exact
+        same graph the GitHub webhook uses.
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap layout">
+    <!-- ---------------- input ---------------- -->
+    <section class="panel input-panel">
+      <div class="panel-head">
+        <h2>Input diff</h2>
+        <select id="fixture-picker" aria-label="Load an example diff">
+          <option value="">Load an example…</option>
+        </select>
+      </div>
+
+      <p id="fixture-intent" class="intent" hidden></p>
+
+      <textarea
+        id="diff-input"
+        spellcheck="false"
+        placeholder="Paste a unified diff here (git diff output)…"></textarea>
+
+      <div class="actions">
+        <button id="run-btn" class="primary">Run review</button>
+        <span id="status" class="status"></span>
+      </div>
+    </section>
+
+    <!-- ---------------- pipeline + results ---------------- -->
+    <section class="panel output-panel">
+      <h2>Agent pipeline</h2>
+
+      <div class="pipeline">
+        <div class="stage">
+          <div class="node" id="node-coordinator">
+            <span class="dot"></span>
+            <span class="name">coordinator</span>
+            <span class="sub">routes the work</span>
+          </div>
+        </div>
+
+        <div class="arrow" aria-hidden="true"></div>
+
+        <div class="stage specialists">
+          <div class="node" id="node-diff_analyzer">
+            <span class="dot"></span>
+            <span class="name">diff_analyzer</span>
+            <span class="sub">intent &amp; risks</span>
+          </div>
+          <div class="node" id="node-test_suggester">
+            <span class="dot"></span>
+            <span class="name">test_suggester</span>
+            <span class="sub">missing tests</span>
+          </div>
+          <div class="node" id="node-security_auditor">
+            <span class="dot"></span>
+            <span class="name">security_auditor</span>
+            <span class="sub">vulnerabilities</span>
+          </div>
+        </div>
+
+        <div class="arrow" aria-hidden="true"></div>
+
+        <div class="stage">
+          <div class="node" id="node-summarizer">
+            <span class="dot"></span>
+            <span class="name">summarizer</span>
+            <span class="sub">one final review</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="stats" class="stats" hidden></div>
+      <div id="errors" class="errors" hidden></div>
+
+      <div id="results" class="results" hidden>
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="review">Final review</button>
+          <button class="tab" data-tab="security">Security <span class="count" id="count-security">0</span></button>
+          <button class="tab" data-tab="diff">Diff analysis</button>
+          <button class="tab" data-tab="tests">Tests</button>
+        </div>
+
+        <div class="tab-body" id="tab-review"></div>
+        <div class="tab-body" id="tab-security" hidden></div>
+        <div class="tab-body" id="tab-diff" hidden></div>
+        <div class="tab-body" id="tab-tests" hidden></div>
+      </div>
+
+      <p id="placeholder" class="placeholder">
+        Results will appear here once you run a review.
+      </p>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <span>FastAPI · LangGraph · Pydantic</span>
+    <span><a href="/health">/health</a> · <a href="/stats">/stats</a></span>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

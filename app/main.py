@@ -10,9 +10,11 @@ import json
 import logging
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app import __version__
 from app.cache import claim_review, close_redis
@@ -21,6 +23,7 @@ from app.github.webhook import parse_pull_request_event, verify_signature
 from app.logging_config import request_id_ctx, setup_logging
 from app.observability.stats import stats
 from app.review import run_review
+from app.webui import router as webui_router
 
 logger = logging.getLogger("app.main")
 
@@ -66,6 +69,18 @@ async def request_id_middleware(request: Request, call_next):
         request_id_ctx.reset(token)
     response.headers["X-Request-ID"] = rid
     return response
+
+
+# Demo UI: static assets plus the routes that drive them.
+_STATIC_DIR = Path(__file__).resolve().parent / "static"
+app.mount("/static", StaticFiles(directory=_STATIC_DIR), name="static")
+app.include_router(webui_router)
+
+
+@app.get("/", include_in_schema=False)
+async def index() -> FileResponse:
+    """Serve the demo page."""
+    return FileResponse(_STATIC_DIR / "index.html")
 
 
 @app.get("/health")

@@ -13,6 +13,22 @@ diffs.
 
 Tech stack: Python, FastAPI, LangGraph, Pydantic, Redis, Docker, Langfuse, pytest.
 
+## Demo UI
+
+The service also serves a demo page at `/` so you can see the agents work
+without wiring up a webhook. Pick one of the eval fixtures (or paste your own
+diff), hit run, and the page streams the graph's progress over SSE: the
+coordinator decides the routing, the specialists light up as they finish, and
+the final review renders alongside the security findings, test suggestions,
+token count and cost.
+
+It drives the same graph the webhook uses; the only difference is the diff comes
+from the browser instead of the GitHub API, so no token or repo is needed.
+
+```bash
+uvicorn app.main:app --reload   # then open http://localhost:8000
+```
+
 ## Features
 
 - Multi-agent graph: a coordinator, three parallel specialists, and a fan-in summarizer.
@@ -147,7 +163,9 @@ independently of the LLM in [tests/test_evals.py](tests/test_evals.py).
 
 ```
 app/
-  main.py            FastAPI: /health, /stats, /webhook/github
+  main.py            FastAPI: /, /health, /stats, /webhook/github
+  webui.py           demo-page API: fixtures + SSE review stream
+  static/            demo page (index.html, styles.css, app.js)
   config.py          Pydantic settings (fails loud on missing env)
   github/            client.py (async, retries, typed errors) + webhook.py (HMAC)
   agents/            state.py, graph.py, coordinator + 3 specialists + summarizer
