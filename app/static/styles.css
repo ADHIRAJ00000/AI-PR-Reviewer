@@ -30,6 +30,9 @@
 
 * { box-sizing: border-box; }
 
+/* `hidden` must win over the display rules below (e.g. .stats { display:flex }). */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--bg);
@@ -144,8 +147,8 @@ button.primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .errors {
   margin-top: 12px; padding: 10px 12px; border-radius: 8px; font-size: 12.5px;
-  background: color-mix(in srgb, var(--crit) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--crit) 40%, transparent);
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.42);
 }
 .errors ul { margin: 6px 0 0; padding-left: 18px; }
 .errors li { margin-bottom: 4px; font-family: var(--mono); font-size: 11.5px; word-break: break-word; }
