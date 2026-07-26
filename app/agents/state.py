@@ -16,15 +16,18 @@ from pydantic import BaseModel, Field, field_validator
 
 
 def _to_str(value: Any) -> str:
-    """Coerce a value some models emit (list/None/number) into a string.
+    """Coerce a value some models emit (list/dict/None/number) into a string.
 
-    Open models (via Groq's strict tool validation) sometimes return an array or
-    null where we expect a string; normalise instead of failing the whole agent.
+    Open models (via Groq's strict tool validation) sometimes return an array,
+    an object, or null where we expect a string; normalise instead of failing
+    the whole agent.
     """
     if value is None:
         return ""
     if isinstance(value, (list, tuple)):
-        return "; ".join(str(v) for v in value)
+        return "; ".join(_to_str(v) for v in value)
+    if isinstance(value, dict):
+        return ", ".join(f"{k}={_to_str(v)}" for k, v in value.items())
     return str(value)
 
 # --------------------------------------------------------------------------- #
@@ -88,14 +91,21 @@ class DiffFindings(BaseModel):
 class TestSuggestion(BaseModel):
     """A single proposed test case.
 
-    `input` / `expected_output` accept str | list | None so strict providers
-    (Groq) don't reject an array/null, then a validator normalises to a string.
+    `input` / `expected_output` accept any JSON value so strict providers (Groq)
+    don't reject an object/array/number, then a validator normalises to a string.
     """
 
     name: str = ""
     verifies: str = Field(default="", description="What behaviour this test checks.")
-    input: str | list | None = Field(default="", description="The input / setup.")
-    expected_output: str | list | None = Field(default="", description="Expected result.")
+    # Accept any JSON value: strict providers (Groq) reject the tool call outright
+    # if the model returns an object/number where a string was declared, so we
+    # widen the schema and let the validator below normalise it to a string.
+    input: str | int | float | bool | list | dict | None = Field(
+        default="", description="The input / setup."
+    )
+    expected_output: str | int | float | bool | list | dict | None = Field(
+        default="", description="Expected result."
+    )
     edge_case: str = Field(
         default="", description="empty | null | boundary | error-path | concurrency | ..."
     )
