@@ -7,18 +7,37 @@
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
+  <!-- ---------------- header / hero ---------------- -->
   <header class="masthead">
+    <div class="glow" aria-hidden="true"></div>
     <div class="wrap">
-      <h1>Autonomous PR Reviewer</h1>
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18c-4.5 0-6-2.5-6-6s1.5-6 6-6" />
+            <path d="M15 6c4.5 0 6 2.5 6 6s-1.5 6-6 6" />
+            <circle cx="9" cy="12" r="1.6" fill="currentColor" stroke="none" />
+            <circle cx="15" cy="12" r="1.6" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span class="brand-name">Autonomous PR Reviewer</span>
+        <span class="badge badge-live"><i></i>Live demo</span>
+      </div>
+
+      <h1>Ship code reviews that <span class="grad">write themselves</span>.</h1>
       <p class="tagline">
-        A LangGraph agent team that reads a pull request diff, runs a diff
+        A team of LangGraph agents reads a pull-request diff, runs a diff
         analyzer, test suggester and security auditor <em>in parallel</em>, then
-        merges their findings into one prioritized review.
+        merges everything into one clear, prioritized review.
       </p>
-      <p class="note">
-        Paste a diff or load an example, then run it. This page drives the exact
-        same graph the GitHub webhook uses.
-      </p>
+
+      <div class="chips">
+        <span class="chip">Multi-agent graph</span>
+        <span class="chip">Structured output</span>
+        <span class="chip">Security auditing</span>
+        <span class="chip">Parallel &amp; resilient</span>
+      </div>
     </div>
   </header>
 
@@ -26,7 +45,7 @@
     <!-- ---------------- input ---------------- -->
     <section class="panel input-panel">
       <div class="panel-head">
-        <h2>Input diff</h2>
+        <h2>Your change</h2>
         <select id="fixture-picker" aria-label="Load an example diff">
           <option value="">Load an example…</option>
         </select>
@@ -35,8 +54,8 @@
       <p id="fixture-intent" class="intent" hidden></p>
 
       <label for="diff-input" class="input-hint">
-        👇 Paste your code changes (a <code>git diff</code>) here — or pick an
-        example above — then click <strong>Run review</strong>.
+        Paste your code changes (a <code>git diff</code>) below — or pick an
+        example above — then hit <strong>Run review</strong>.
       </label>
 
       <textarea
@@ -45,21 +64,43 @@
         placeholder="Paste your code here (git diff output)…"></textarea>
 
       <div class="actions">
-        <button id="run-btn" class="primary">Run review</button>
+        <button type="button" id="run-btn" class="primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 3l14 9-14 9V3z" />
+          </svg>
+          Run review
+        </button>
         <span id="status" class="status"></span>
       </div>
     </section>
 
     <!-- ---------------- pipeline + results ---------------- -->
     <section class="panel output-panel">
-      <h2>Agent pipeline</h2>
+      <div class="panel-head">
+        <h2>Agent pipeline</h2>
+        <span class="legend">
+          <span class="lg lg-run">running</span>
+          <span class="lg lg-done">done</span>
+          <span class="lg lg-skip">skipped</span>
+        </span>
+      </div>
 
       <div class="pipeline">
         <div class="stage">
           <div class="node" id="node-coordinator">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="19" r="2.2"/>
+                <circle cx="19" cy="19" r="2.2"/><path d="M12 7.2v3.3M12 10.5L6 16.8M12 10.5l6 6.3"/>
+              </svg>
+            </span>
+            <span class="node-text">
+              <span class="name">coordinator</span>
+              <span class="sub">routes the work</span>
+            </span>
             <span class="dot"></span>
-            <span class="name">coordinator</span>
-            <span class="sub">routes the work</span>
           </div>
         </div>
 
@@ -67,19 +108,43 @@
 
         <div class="stage specialists">
           <div class="node" id="node-diff_analyzer">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 4h9l3 3v13H6z"/><path d="M9 12h6M9 16h4"/>
+              </svg>
+            </span>
+            <span class="node-text">
+              <span class="name">diff_analyzer</span>
+              <span class="sub">intent &amp; risks</span>
+            </span>
             <span class="dot"></span>
-            <span class="name">diff_analyzer</span>
-            <span class="sub">intent &amp; risks</span>
           </div>
           <div class="node" id="node-test_suggester">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </span>
+            <span class="node-text">
+              <span class="name">test_suggester</span>
+              <span class="sub">missing tests</span>
+            </span>
             <span class="dot"></span>
-            <span class="name">test_suggester</span>
-            <span class="sub">missing tests</span>
           </div>
           <div class="node" id="node-security_auditor">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/>
+              </svg>
+            </span>
+            <span class="node-text">
+              <span class="name">security_auditor</span>
+              <span class="sub">vulnerabilities</span>
+            </span>
             <span class="dot"></span>
-            <span class="name">security_auditor</span>
-            <span class="sub">vulnerabilities</span>
           </div>
         </div>
 
@@ -87,9 +152,17 @@
 
         <div class="stage">
           <div class="node" id="node-summarizer">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6h16M4 12h16M4 18h9"/>
+              </svg>
+            </span>
+            <span class="node-text">
+              <span class="name">summarizer</span>
+              <span class="sub">one final review</span>
+            </span>
             <span class="dot"></span>
-            <span class="name">summarizer</span>
-            <span class="sub">one final review</span>
           </div>
         </div>
       </div>
@@ -99,10 +172,10 @@
 
       <div id="results" class="results" hidden>
         <div class="tabs" role="tablist">
-          <button class="tab active" data-tab="review">Final review</button>
-          <button class="tab" data-tab="security">Security <span class="count" id="count-security">0</span></button>
-          <button class="tab" data-tab="diff">Diff analysis</button>
-          <button class="tab" data-tab="tests">Tests</button>
+          <button type="button" class="tab active" data-tab="review">Final review</button>
+          <button type="button" class="tab" data-tab="security">Security <span class="count" id="count-security">0</span></button>
+          <button type="button" class="tab" data-tab="diff">Diff analysis</button>
+          <button type="button" class="tab" data-tab="tests">Tests</button>
         </div>
 
         <div class="tab-body" id="tab-review"></div>
@@ -111,15 +184,21 @@
         <div class="tab-body" id="tab-tests" hidden></div>
       </div>
 
-      <p id="placeholder" class="placeholder">
-        Results will appear here once you run a review.
-      </p>
+      <div id="placeholder" class="placeholder">
+        <span class="placeholder-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>
+          </svg>
+        </span>
+        <span>Run a review and the results will appear here.</span>
+      </div>
     </section>
   </main>
 
   <footer class="wrap foot">
-    <span>FastAPI · LangGraph · Pydantic</span>
-    <span><a href="/health">/health</a> · <a href="/stats">/stats</a></span>
+    <span>Built with FastAPI · LangGraph · Pydantic</span>
+    <span class="foot-links"><a href="/health">/health</a> <a href="/stats">/stats</a></span>
   </footer>
 
   <script src="/static/app.js"></script>

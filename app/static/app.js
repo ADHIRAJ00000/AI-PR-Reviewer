@@ -145,11 +145,13 @@ function renderDone(d) {
   renderTests(d.test_suggestions);
 
   const s = d.stats || {};
+  const tile = (num, label) =>
+    `<div class="stat"><span class="stat-num">${num}</span><span class="stat-label">${label}</span></div>`;
   statsEl.innerHTML =
-    `<span><b>${s.agents ?? 0}</b> agents</span>` +
-    `<span><b>${(s.tokens ?? 0).toLocaleString()}</b> tokens</span>` +
-    `<span><b>$${(s.cost_usd ?? 0).toFixed(4)}</b></span>` +
-    `<span><b>${s.latency_s ?? 0}s</b></span>`;
+    tile(s.agents ?? 0, "agents") +
+    tile((s.tokens ?? 0).toLocaleString(), "tokens") +
+    tile(`$${(s.cost_usd ?? 0).toFixed(4)}`, "cost") +
+    tile(`${s.latency_s ?? 0}s`, "latency");
   statsEl.hidden = false;
 
   if (d.errors?.length) {
