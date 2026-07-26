@@ -83,6 +83,12 @@ async def index() -> FileResponse:
     return FileResponse(_STATIC_DIR / "index.html")
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon() -> FileResponse:
+    """Serve the favicon for browsers that request /favicon.ico directly."""
+    return FileResponse(_STATIC_DIR / "favicon.svg", media_type="image/svg+xml")
+
+
 @app.get("/health")
 async def health() -> JSONResponse:
     """Liveness probe."""
