@@ -34,10 +34,15 @@
 
       <p id="fixture-intent" class="intent" hidden></p>
 
+      <label for="diff-input" class="input-hint">
+        👇 Paste your code changes (a <code>git diff</code>) here — or pick an
+        example above — then click <strong>Run review</strong>.
+      </label>
+
       <textarea
         id="diff-input"
         spellcheck="false"
-        placeholder="Paste a unified diff here (git diff output)…"></textarea>
+        placeholder="Paste your code here (git diff output)…"></textarea>
 
       <div class="actions">
         <button id="run-btn" class="primary">Run review</button>
