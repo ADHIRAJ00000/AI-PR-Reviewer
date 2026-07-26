@@ -100,6 +100,14 @@ docker compose up --build
 # app on http://localhost:8000, redis on :6379
 ```
 
+### Deploy (Render)
+
+A [`render.yaml`](render.yaml) blueprint is included. In Render: **New →
+Blueprint → pick this repo**, then paste a Groq key for `LLM_API_KEY`. It builds
+the Dockerfile and serves the app plus the demo UI at `/`. The demo UI needs no
+GitHub token, so the `GITHUB_*` vars stay as placeholders unless you enable the
+webhook.
+
 ### Run the tests
 
 ```bash
