@@ -24,7 +24,12 @@
   --ok: #e4e4e7;
   --warn: #a1a1aa;
   --crit: #fafafa;
-  --skip: #3a3a42;
+  --skip: #52525b;
+
+  /* status accents (the only colour in an otherwise monochrome UI) */
+  --run: #60a5fa;
+  --done: #4ade80;
+  --fail: #f87171;
 
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, system-ui, sans-serif;
@@ -53,10 +58,13 @@
     --brand-ink: #ffffff;
     --grad: linear-gradient(180deg, #27272a 0%, #18181b 100%);
     --grad-soft: linear-gradient(100deg, rgba(0,0,0,.05), rgba(0,0,0,.03));
-    --skip: #c9c9cf;
+    --skip: #b4b4bb;
     --ok: #18181b;
     --warn: #6b6b73;
     --crit: #18181b;
+    --run: #2563eb;
+    --done: #16a34a;
+    --fail: #dc2626;
     --shadow-md: 0 10px 30px -12px rgba(0,0,0,.16);
     --shadow-lg: 0 30px 60px -28px rgba(0,0,0,.2);
   }
@@ -220,8 +228,8 @@ button.primary:disabled { opacity: 0.5; cursor: progress; box-shadow: none; }
 .legend { display: flex; gap: 12px; font-size: 11px; color: var(--muted); }
 .lg { display: inline-flex; align-items: center; gap: 5px; }
 .lg::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--skip); }
-.lg-run::before { background: var(--text); }
-.lg-done::before { background: var(--muted); }
+.lg-run::before { background: var(--run); }
+.lg-done::before { background: var(--done); }
 .lg-skip::before { background: var(--skip); }
 
 .pipeline {
@@ -252,20 +260,20 @@ button.primary:disabled { opacity: 0.5; cursor: progress; box-shadow: none; }
   transition: background .25s, box-shadow .25s; }
 
 .node.running {
-  border-color: var(--brand);
-  box-shadow: 0 0 0 1px var(--brand), 0 10px 26px -12px rgba(255,255,255,.18);
+  border-color: var(--run);
+  box-shadow: 0 0 0 1px var(--run), 0 10px 26px -12px rgba(96,165,250,.5);
   transform: translateY(-1px);
 }
-.node.running .node-icon { color: var(--brand-ink); background: var(--grad); border-color: transparent; }
-.node.running .dot { background: var(--brand); animation: blink 1s ease-in-out infinite; }
+.node.running .node-icon { color: var(--run); background: rgba(96,165,250,.14); border-color: var(--run); }
+.node.running .dot { background: var(--run); animation: blink 1s ease-in-out infinite; }
 
-.node.done { border-color: var(--border-strong); }
-.node.done .node-icon { color: var(--text); border-color: var(--border-strong); }
-.node.done .dot { background: var(--text); box-shadow: 0 0 8px rgba(255,255,255,.4); }
+.node.done { border-color: rgba(74,222,128,.5); }
+.node.done .node-icon { color: var(--done); border-color: rgba(74,222,128,.4); }
+.node.done .dot { background: var(--done); box-shadow: 0 0 8px rgba(74,222,128,.55); }
 
-.node.failed { border-color: var(--border-strong); border-style: dashed; opacity: .72; }
-.node.failed .node-icon { color: var(--muted); }
-.node.failed .dot { background: var(--muted); }
+.node.failed { border-color: rgba(248,113,113,.55); }
+.node.failed .node-icon { color: var(--fail); border-color: rgba(248,113,113,.4); }
+.node.failed .dot { background: var(--fail); }
 
 .node.skipped { opacity: 0.42; }
 
